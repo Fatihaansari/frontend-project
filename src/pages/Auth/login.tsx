@@ -60,10 +60,12 @@ export default function Login() {
       eyebrow="Welcome back"
       headline="Pick up right where your team left off."
     >
-      <Card>
-        <CardHeader>
-          <CardTitle>Sign in</CardTitle>
-          <CardDescription>
+      <Card className="border-0 bg-white shadow-xl">
+        <CardHeader className="space-y-2 pb-6">
+          <CardTitle className="text-3xl font-bold py-4 text-black">
+            Sign in
+          </CardTitle>
+          <CardDescription className="text-gray-500">
             Enter your credentials to access your account.
           </CardDescription>
         </CardHeader>
@@ -79,7 +81,7 @@ export default function Login() {
               <Label htmlFor="email">Email address</Label>
               <div className="relative mt-1.5">
                 <Mail
-                  className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-500"
+                  className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
                   aria-hidden="true"
                 />
                 <Input
@@ -99,7 +101,7 @@ export default function Login() {
                 <Label htmlFor="password">Password</Label>
                 <Link
                   to="/forgot-password"
-                  className="text-xs font-medium text-brand-600 hover:underline"
+                  className="text-xs font-medium text-orange-500 transition-colors hover:text-orange-600"
                 >
                   Forgot password?
                 </Link>
@@ -116,10 +118,10 @@ export default function Login() {
               <FieldError message={errors.password?.message} />
             </div>
 
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-ink-700">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
-                className="h-4 w-4 rounded border-ink-300 text-brand-600 focus-visible:ring-2 focus-visible:ring-brand-500/40"
+                className="h-4 w-4 rounded border-gray-300 text-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/30"
                 {...register("remember")}
               />
               Keep me signed in
@@ -127,10 +129,9 @@ export default function Login() {
 
             <Button
               type="submit"
-              variant="default"
               size="lg"
               disabled={isSubmitting}
-              className="w-full"
+              className="w-full bg-orange-500 text-white hover:bg-orange-600"
             >
               {!isSubmitting && (
                 <LogIn className="h-4 w-4" aria-hidden="true" />
@@ -139,11 +140,11 @@ export default function Login() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-ink-500">
+          <p className="mt-6 text-center text-sm text-gray-500">
             Don&apos;t have an account?{" "}
             <Link
               to="/signup"
-              className="font-medium text-brand-600 hover:underline"
+              className="font-medium text-orange-500 transition-colors hover:text-orange-600"
             >
               Create one
             </Link>
