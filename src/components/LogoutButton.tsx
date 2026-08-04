@@ -1,5 +1,7 @@
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface LogoutButtonProps {
   variant?:
@@ -16,11 +18,12 @@ export default function LogoutButton({
   variant = "outline",
   className = "",
 }: LogoutButtonProps) {
-  const handleLogout = () => {
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("current_user");
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
-    window.location.replace("/login");
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
   };
 
   return (

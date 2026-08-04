@@ -24,6 +24,7 @@ import {
 } from "@/lib/validations";
 import { authApi } from "@/lib/auth-api";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 const STRENGTH_LABEL = ["Very weak", "Weak", "Fair", "Good", "Strong"];
 const STRENGTH_COLOR = [
@@ -37,7 +38,7 @@ const STRENGTH_COLOR = [
 export default function Signup() {
   const navigate = useNavigate();
   const [formError, setFormError] = React.useState<string | null>(null);
-
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -69,7 +70,7 @@ export default function Signup() {
         email: values.email,
         password: values.password,
       });
-      localStorage.setItem("auth_token", token);
+      login(token);
       navigate("/dashboard", { replace: true, state: { userId: user.id } });
     } catch (err) {
       const message =

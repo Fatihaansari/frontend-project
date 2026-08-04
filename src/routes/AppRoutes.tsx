@@ -12,9 +12,10 @@ import Reports from "@/pages/Reports";
 import Settings from "@/pages/Settings";
 import Signup from "@/pages/Auth/signup";
 import Login from "@/pages/Auth/login";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AppRoutes() {
-  const isAuthenticated = !!localStorage.getItem("auth_token");
+  const { isAuthenticated } = useAuth();
   return (
     <BrowserRouter>
       <Routes>

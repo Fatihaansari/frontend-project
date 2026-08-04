@@ -19,11 +19,12 @@ import {
 } from "@/components/ui/card";
 import { loginSchema, type LoginFormValues } from "@/lib/validations";
 import { authApi } from "@/lib/auth-api";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
   const [formError, setFormError] = React.useState<string | null>(null);
-
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -39,7 +40,7 @@ export default function Login() {
 
     try {
       const { user, token } = await authApi.login(values);
-      localStorage.setItem("auth_token", token);
+      login(token);
       if (!values.remember) {
         // Session-only: clear the token once the browser tab closes.
         window.addEventListener("beforeunload", () =>
