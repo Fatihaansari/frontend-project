@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
@@ -12,7 +13,10 @@ import {
   ClipboardMinus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import ProjectModal from "@/pages/Projects/ProjectModal";
+import { useProjects } from "@/context/Projectscontext";
+import type { Project } from "@/pages/Projects/projectData";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
@@ -31,6 +35,21 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const { addProject } = useProjects();
+  const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const handleOpenCreateModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleSaveProject = (project: Project) => {
+    addProject(project);
+    setIsModalOpen(false);
+    navigate("/projects");
+  };
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -40,7 +59,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
         />
       )}
-
       <aside
         className={cn(
           "fixed left-0 top-0 z-50 flex h-screen w-60 flex-col bg-black px-4 py-6 transition-transform duration-300",
@@ -53,19 +71,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500">
             <span className="text-sm font-bold text-white">☀</span>
           </div>
-
           <span className="text-xl font-bold text-white">Promage</span>
         </div>
 
         {/* Button */}
-
-        <Button className="mb-8 w-full rounded-full bg-white text-black hover:bg-gray-100">
+        <Button
+          type="button"
+          onClick={handleOpenCreateModal}
+          className="mb-8 w-full rounded-full bg-white text-black hover:bg-gray-100"
+        >
           <Plus className="mr-2 h-4 w-4 text-orange-500" />
           Create new project
         </Button>
 
         {/* Navigation */}
-
         <nav className="flex flex-1 flex-col gap-1">
           {navItems.map((item) => (
             <NavLink
@@ -88,11 +107,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* Help */}
-
         <button className="mt-6 flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white hover:bg-orange-600">
           <HelpCircle className="h-5 w-5" />
         </button>
       </aside>
+
+      {/* Create Project Modal */}
+      <ProjectModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        project={null}
+        onSave={handleSaveProject}
+      />
     </>
   );
 }

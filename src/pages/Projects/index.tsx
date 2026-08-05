@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/select";
 
 import { ProjectTable } from "@/pages/Projects/ProjectTable";
-import { projectData } from "@/pages/Projects/projectData";
 import type { Project } from "@/pages/Projects/projectData";
+import { useProjects } from "@/context/Projectscontext";
 import ProjectModal from "./ProjectModal";
 
 /* =========================================================
@@ -41,7 +41,13 @@ const PRIORITY_OPTIONS: PriorityFilter[] = ["All", "Low", "Medium", "High"];
 ========================================================= */
 
 export default function ProjectsPage(): React.JSX.Element {
-  const [projects, setProjects] = React.useState<Project[]>(projectData);
+  const {
+    projects,
+    addProject,
+    updateProject,
+    deleteProject,
+    reorderProjects,
+  } = useProjects();
 
   const [searchTerm, setSearchTerm] = React.useState<string>("");
   const [statusFilter, setStatusFilter] = React.useState<StatusFilter>("All");
@@ -52,10 +58,6 @@ export default function ProjectsPage(): React.JSX.Element {
   const [editingProject, setEditingProject] = React.useState<Project | null>(
     null,
   );
-
-  React.useEffect(() => {
-    // TODO: fetch projects
-  }, []);
 
   const filteredProjects = React.useMemo<Project[]>(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -103,45 +105,35 @@ export default function ProjectsPage(): React.JSX.Element {
     }
   }, []);
 
-  const handleDeleteProject = React.useCallback((project: Project) => {
-    const isConfirmed = window.confirm(
-      `Are you sure you want to delete "${project.project_name}"? This action cannot be undone.`,
-    );
+  const handleDeleteProject = React.useCallback(
+    (project: Project) => {
+      const isConfirmed = window.confirm(
+        `Are you sure you want to delete "${project.project_name}"? This action cannot be undone.`,
+      );
 
-    if (!isConfirmed) {
-      return;
-    }
+      if (!isConfirmed) {
+        return;
+      }
 
-    // TODO: delete project
-    setProjects((previousProjects) =>
-      previousProjects.filter((item) => item.id !== project.id),
-    );
-  }, []);
-
-  const handleReorderProjects = React.useCallback((reordered: Project[]) => {
-    setProjects(reordered);
-  }, []);
+      deleteProject(project.id);
+    },
+    [deleteProject],
+  );
 
   const handleSaveProject = React.useCallback(
     (project: Project) => {
       if (editingProject) {
-        // TODO: update project
-        setProjects((previousProjects) =>
-          previousProjects.map((item) =>
-            item.id === project.id ? project : item,
-          ),
-        );
+        updateProject(project);
       } else {
-        // TODO: create project
-        setProjects((previousProjects) => [project, ...previousProjects]);
+        addProject(project);
       }
     },
-    [editingProject],
+    [editingProject, addProject, updateProject],
   );
 
   return (
-    <div className="min-h-screen w-full bg-gray-50">
-      <div className="mx-auto w-full  px-4 py-6 sm:px-6 lg:px-8">
+    <div className="w-full bg-gray-50">
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
         {/* Page Header */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
@@ -236,7 +228,7 @@ export default function ProjectsPage(): React.JSX.Element {
         {/* Table */}
         <ProjectTable
           projects={filteredProjects}
-          onChange={handleReorderProjects}
+          onChange={reorderProjects}
           onEdit={handleOpenEditModal}
           onDelete={handleDeleteProject}
         />
