@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 
 import Dashboard from "../pages/Dashboard";
-import Projects from "@/pages/Projects";
+import Projects from "@/pages/Projects/index";
 import Tasks from "@/pages/Tasks";
 import Sprint from "@/pages/Sprint";
 import TeamManagement from "@/pages/TeamManagement";
