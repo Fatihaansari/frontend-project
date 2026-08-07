@@ -20,14 +20,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Pencil, Trash2, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { EmptyState } from "@/components/common/EmptyState";
-import { cn } from "@/lib/utils";
 
 import type { User } from "./userData";
 import Pagination from "@/components/common/Pagination";
+import StatusBadge from "@/components/common/StatusBadge";
 
 interface UserTableProps {
   users: User[];
@@ -37,16 +36,6 @@ interface UserTableProps {
 }
 
 const PAGE_SIZE = 8;
-
-// Use a more permissive key type because some status values may not be
-// present in the User type (e.g. Suspended) depending on data source.
-const STATUS_STYLES: Record<string, string> = {
-  Active: "bg-green-100 text-green-700 border-green-200",
-
-  Inactive: "bg-gray-100 text-gray-700 border-gray-200",
-
-  Suspended: "bg-red-100 text-red-700 border-red-200",
-};
 
 function SortableRow({
   user,
@@ -124,12 +113,7 @@ function SortableRow({
       {/* Status */}
 
       <td className="px-4 py-4">
-        <Badge
-          variant="outline"
-          className={cn("rounded-full", STATUS_STYLES[user.status])}
-        >
-          {user.status}
-        </Badge>
+        <StatusBadge status={user.status} />
       </td>
 
       {/* Joining */}

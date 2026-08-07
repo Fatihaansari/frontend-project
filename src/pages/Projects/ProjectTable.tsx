@@ -32,6 +32,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Pagination from "@/components/common/Pagination";
+import StatusBadge from "@/components/common/StatusBadge";
 const PAGE_SIZE = 8;
 /* =========================================================
    TYPES
@@ -56,16 +57,6 @@ export interface ProjectTableProps {
   onEdit: (project: Project) => void;
   onDelete: (project: Project) => void;
 }
-
-/* =========================================================
-   STATIC CONFIG
-========================================================= */
-
-const STATUS_STYLES: Record<Project["status"], string> = {
-  Active: "bg-green-100 text-green-700 border border-green-300",
-  "On Hold": "bg-yellow-100 text-yellow-700 border border-yellow-300",
-  Completed: "bg-blue-100 text-blue-700 border border-blue-300",
-};
 
 const PRIORITY_STYLES: Record<Project["priority"], string> = {
   Low: "bg-gray-100 text-gray-700 border border-gray-300",
@@ -199,15 +190,7 @@ function SortableRow({
       </TableCell>
 
       <TableCell className="py-3">
-        <Badge
-          variant="outline"
-          className={cn(
-            "rounded-full px-2.5 py-0.5 font-medium",
-            STATUS_STYLES[project.status],
-          )}
-        >
-          {project.status}
-        </Badge>
+        <StatusBadge status={project.status} />
       </TableCell>
 
       <TableCell className="py-3">

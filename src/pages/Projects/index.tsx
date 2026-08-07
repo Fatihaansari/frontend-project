@@ -16,6 +16,7 @@ import { ProjectTable } from "@/pages/Projects/ProjectTable";
 import type { Project } from "@/pages/Projects/projectData";
 import { useProjects } from "@/context/Projectscontext";
 import ProjectModal from "./ProjectModal";
+import SearchFilterBar from "@/components/common/SearchFilterBar";
 
 /* =========================================================
    TYPES
@@ -167,70 +168,68 @@ export default function ProjectsPage(): React.JSX.Element {
         </div>
 
         {/* Filters */}
-        <div className="mb-6 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <div className="relative w-full sm:max-w-xs sm:flex-1">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Search by project name..."
-                className="rounded-xl border-gray-200 pl-9 focus-visible:ring-orange-500"
-              />
-            </div>
+        <SearchFilterBar>
+          <div className="relative w-full sm:max-w-xs sm:flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
 
-            <Select
-              value={statusFilter}
-              onValueChange={(value) => setStatusFilter(value as StatusFilter)}
-            >
-              <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-40">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                {STATUS_OPTIONS.map((status) => (
-                  <SelectItem key={status} value={status}>
-                    {status === "All" ? "All Statuses" : status}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={priorityFilter}
-              onValueChange={(value) =>
-                setPriorityFilter(value as PriorityFilter)
-              }
-            >
-              <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-40">
-                <SelectValue placeholder="Priority" />
-              </SelectTrigger>
-              <SelectContent>
-                {PRIORITY_OPTIONS.map((priority) => (
-                  <SelectItem key={priority} value={priority}>
-                    {priority === "All" ? "All Priorities" : priority}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleResetFilters}
-              disabled={!hasActiveFilters}
-              className={cn(
-                "w-full gap-2 rounded-xl border-gray-200 text-gray-600 sm:w-auto",
-                hasActiveFilters &&
-                  "border-orange-300 text-orange-600 hover:bg-orange-50",
-              )}
-            >
-              <RotateCcw className="h-4 w-4" />
-              Reset Filters
-            </Button>
+            <Input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by project name..."
+              className="rounded-xl border-gray-200 pl-9 focus-visible:ring-orange-500"
+            />
           </div>
-        </div>
 
+          <Select
+            value={statusFilter}
+            onValueChange={(value) => setStatusFilter(value as StatusFilter)}
+          >
+            <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-40">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              {STATUS_OPTIONS.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {status === "All" ? "All Statuses" : status}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={priorityFilter}
+            onValueChange={(value) =>
+              setPriorityFilter(value as PriorityFilter)
+            }
+          >
+            <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-40">
+              <SelectValue placeholder="Priority" />
+            </SelectTrigger>
+            <SelectContent>
+              {PRIORITY_OPTIONS.map((priority) => (
+                <SelectItem key={priority} value={priority}>
+                  {priority === "All" ? "All Priorities" : priority}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleResetFilters}
+            disabled={!hasActiveFilters}
+            className={cn(
+              "w-full gap-2 rounded-xl border-gray-200 text-gray-600 sm:w-auto",
+              hasActiveFilters &&
+                "border-orange-300 text-orange-600 hover:bg-orange-50",
+            )}
+          >
+            <RotateCcw className="h-4 w-4" />
+            Reset Filters
+          </Button>
+        </SearchFilterBar>
         {/* Table */}
         <ProjectTable
           projects={filteredProjects}
