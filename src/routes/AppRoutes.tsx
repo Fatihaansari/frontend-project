@@ -5,7 +5,7 @@ import MainLayout from "../components/layout/MainLayout";
 import Dashboard from "../pages/Dashboard";
 import Projects from "@/pages/Projects/index";
 import Tasks from "@/pages/Tasks/index";
-import Sprint from "@/pages/Sprint";
+import Sprint from "@/pages/Sprints/index";
 import TeamManagement from "@/pages/TeamManagement";
 import Users from "@/pages/users/index";
 import Reports from "@/pages/Reports";
