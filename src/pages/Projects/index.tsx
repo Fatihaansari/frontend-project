@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Plus, Search, RotateCcw, FolderKanban } from "lucide-react";
-import DeleteConfirm from "@/components/DeleteConfirm";
+import DeleteConfirm from "@/components/common/DeleteConfirm";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

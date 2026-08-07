@@ -2,7 +2,7 @@ import * as React from "react";
 import { Plus, Search, RotateCcw, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import DeleteConfirm from "@/components/DeleteConfirm";
+import DeleteConfirm from "@/components/common/DeleteConfirm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

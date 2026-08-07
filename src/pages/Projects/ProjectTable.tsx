@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import Pagination from "@/components/common/Pagination";
 const PAGE_SIZE = 8;
 /* =========================================================
    TYPES
@@ -378,62 +379,13 @@ export function ProjectTable({
           </Table>
         </DndContext>
       </div>
-      {/* Pagination */}
-
-      <div className="flex flex-col items-center justify-between gap-4 border-t bg-white px-6 py-4 sm:flex-row">
-        <p className="text-sm text-gray-500">
-          Showing{" "}
-          <span className="font-medium">
-            {(currentPage - 1) * PAGE_SIZE + 1}
-          </span>{" "}
-          -
-          <span className="font-medium">
-            {" "}
-            {Math.min(currentPage * PAGE_SIZE, projects.length)}
-          </span>{" "}
-          of <span className="font-medium">{projects.length}</span> users
-        </p>
-
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={currentPage === 1}
-            onClick={() => setPage((p) => p - 1)}
-          >
-            Previous
-          </Button>
-
-          {Array.from({ length: totalPages }).map((_, index) => {
-            const pageNumber = index + 1;
-
-            return (
-              <Button
-                key={pageNumber}
-                size="icon"
-                variant={pageNumber === currentPage ? "default" : "outline"}
-                onClick={() => setPage(pageNumber)}
-                className={
-                  pageNumber === currentPage
-                    ? "bg-orange-500 hover:bg-orange-600"
-                    : ""
-                }
-              >
-                {pageNumber}
-              </Button>
-            );
-          })}
-
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={currentPage === totalPages}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      <Pagination
+        page={currentPage}
+        totalPages={totalPages}
+        totalItems={projects.length} // UserTable me users.length
+        pageSize={PAGE_SIZE}
+        onPageChange={setPage}
+      />
     </div>
   );
 }
