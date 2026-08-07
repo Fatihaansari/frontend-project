@@ -2,7 +2,7 @@ import * as React from "react";
 import { Plus, Search, RotateCcw, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-
+import DeleteConfirm from "@/components/DeleteConfirm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -42,6 +42,9 @@ export default function UsersPage() {
   const [editingUser, setEditingUser] = React.useState<User | null>(null);
 
   const [modalOpen, setModalOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
   const filteredUsers = React.useMemo(() => {
     return users.filter((user) => {
       const matchesSearch =
@@ -66,11 +69,21 @@ export default function UsersPage() {
     setModalOpen(true);
   };
 
-  const handleDelete = (user: User) => {
-    if (!window.confirm(`Delete ${user.name}?`)) return;
+  const handleDeleteUser = React.useCallback((user: User) => {
+    setSelectedUser(user);
+    setDeleteOpen(true);
+  }, []);
+  const confirmDelete = React.useCallback(() => {
+    if (!selectedUser) return;
 
-    setUsers((prev) => prev.filter((x) => x.id !== user.id));
-  };
+    setUsers((prev) => prev.filter((u) => u.id !== selectedUser.id));
+
+    setSelectedUser(null);
+    setDeleteOpen(false);
+
+    // TODO:
+    // await userApi.delete(selectedUser.id)
+  }, [selectedUser]);
 
   const handleSave = (values: UserFormValues) => {
     if (editingUser) {
@@ -193,7 +206,7 @@ export default function UsersPage() {
         users={filteredUsers}
         onChange={setUsers}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onDelete={handleDeleteUser}
       />
 
       <UserModal
@@ -201,6 +214,13 @@ export default function UsersPage() {
         onOpenChange={setModalOpen}
         user={editingUser}
         onSave={handleSave}
+      />
+      <DeleteConfirm
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        title="Delete User"
+        description={`Are you sure you want to delete "${selectedUser?.name}"? This action cannot be undone.`}
+        onConfirm={confirmDelete}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Plus, Search, RotateCcw, FolderKanban } from "lucide-react";
-
+import DeleteConfirm from "@/components/DeleteConfirm";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,7 +58,11 @@ export default function ProjectsPage(): React.JSX.Element {
   const [editingProject, setEditingProject] = React.useState<Project | null>(
     null,
   );
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
 
+  const [selectedProject, setSelectedProject] = React.useState<Project | null>(
+    null,
+  );
   const filteredProjects = React.useMemo<Project[]>(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
@@ -105,20 +109,22 @@ export default function ProjectsPage(): React.JSX.Element {
     }
   }, []);
 
-  const handleDeleteProject = React.useCallback(
-    (project: Project) => {
-      const isConfirmed = window.confirm(
-        `Are you sure you want to delete "${project.project_name}"? This action cannot be undone.`,
-      );
+  const handleDeleteProject = React.useCallback((project: Project) => {
+    setSelectedProject(project);
+    setDeleteOpen(true);
+  }, []);
 
-      if (!isConfirmed) {
-        return;
-      }
+  const confirmDelete = React.useCallback(() => {
+    if (!selectedProject) return;
 
-      deleteProject(project.id);
-    },
-    [deleteProject],
-  );
+    deleteProject(selectedProject.id);
+
+    setDeleteOpen(false);
+    setSelectedProject(null);
+
+    // TODO:
+    // await api.delete(...)
+  }, [selectedProject, deleteProject]);
 
   const handleSaveProject = React.useCallback(
     (project: Project) => {
@@ -240,6 +246,13 @@ export default function ProjectsPage(): React.JSX.Element {
         onOpenChange={handleModalOpenChange}
         project={editingProject}
         onSave={handleSaveProject}
+      />
+      <DeleteConfirm
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        title="Delete Project"
+        description={`Are you sure you want to delete "${selectedProject?.project_name}"? This action cannot be undone.`}
+        onConfirm={confirmDelete}
       />
     </div>
   );
