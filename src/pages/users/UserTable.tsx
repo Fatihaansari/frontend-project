@@ -60,28 +60,28 @@ function SortableRow({
     <tr
       ref={setNodeRef}
       style={style}
-      className="border-b transition-colors hover:bg-orange-50/40"
+      className="border-b border-border transition-colors hover:bg-muted/50"
     >
       {/* Drag */}
-
       <td className="w-12 px-4 py-4">
         <button
+          type="button"
           {...attributes}
           {...listeners}
-          className="cursor-grab text-gray-400 transition hover:text-orange-500 active:cursor-grabbing"
+          className="cursor-grab text-muted-foreground transition hover:text-orange-500 active:cursor-grabbing"
+          aria-label={`Reorder ${user.name}`}
         >
           <GripVertical className="h-5 w-5" />
         </button>
       </td>
 
       {/* User */}
-
       <td className="px-4 py-4">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarImage src={user.avatar} />
 
-            <AvatarFallback className="bg-orange-100 text-orange-600">
+            <AvatarFallback className="bg-orange-100 text-orange-600 dark:bg-orange-950 dark:text-orange-400">
               {user.name
                 .split(" ")
                 .map((n) => n[0])
@@ -91,40 +91,41 @@ function SortableRow({
           </Avatar>
 
           <div>
-            <p className="font-medium text-gray-900">{user.name}</p>
+            <p className="font-medium text-foreground">{user.name}</p>
 
-            <p className="text-xs text-gray-500">{user.email}</p>
+            <p className="text-xs text-muted-foreground">{user.email}</p>
           </div>
         </div>
       </td>
 
       {/* Phone */}
-
-      <td className="px-4 py-4 text-sm">{user.phone}</td>
+      <td className="px-4 py-4 text-sm text-foreground">{user.phone}</td>
 
       {/* Role */}
-
-      <td className="px-4 py-4">{user.role}</td>
+      <td className="px-4 py-4 text-foreground">{user.role}</td>
 
       {/* Department */}
-
-      <td className="px-4 py-4">{user.department}</td>
+      <td className="px-4 py-4 text-foreground">{user.department}</td>
 
       {/* Status */}
-
       <td className="px-4 py-4">
         <StatusBadge status={user.status} />
       </td>
 
       {/* Joining */}
-
-      <td className="px-4 py-4 whitespace-nowrap">{user.joining_date}</td>
+      <td className="whitespace-nowrap px-4 py-4 text-foreground">
+        {user.joining_date}
+      </td>
 
       {/* Actions */}
-
       <td className="px-4 py-4">
         <div className="flex items-center justify-center gap-2">
-          <Button size="icon" variant="outline" onClick={() => onEdit(user)}>
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => onEdit(user)}
+            aria-label={`Edit ${user.name}`}
+          >
             <Pencil className="h-4 w-4" />
           </Button>
 
@@ -132,6 +133,7 @@ function SortableRow({
             size="icon"
             variant="destructive"
             onClick={() => onDelete(user)}
+            aria-label={`Delete ${user.name}`}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -160,12 +162,14 @@ export default function UserTable({
 
     return users.slice(start, start + PAGE_SIZE);
   }, [users, currentPage]);
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
 
     const oldIndex = users.findIndex((u) => u.id === active.id);
+
     const newIndex = users.findIndex((u) => u.id === over.id);
 
     onChange(arrayMove(users, oldIndex, newIndex));
@@ -176,53 +180,55 @@ export default function UserTable({
       <EmptyState
         icon={Users}
         title="No users found"
-        description="Create your first user to get started."
+        description="Try changing your search or filters, or create a new user."
       />
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-      <div className="overflow-x-auto">
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
+    <div className="space-y-4">
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={users.map((u) => u.id)}
+          strategy={verticalListSortingStrategy}
         >
-          <SortableContext
-            items={users.map((u) => u.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <table className="min-w-full">
-              <thead className="bg-gray-50">
-                <tr className="border-b">
-                  <th className="w-12 px-4 py-3"></th>
+          <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+            <table className="w-full min-w-225 text-left">
+              <thead className="border-b border-border bg-muted/50">
+                <tr>
+                  <th className="w-12 px-4 py-3 text-left text-sm font-semibold text-foreground">
+                    {/* Drag */}
+                  </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     User
                   </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     Phone
                   </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     Role
                   </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     Department
                   </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     Status
                   </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     Joining Date
                   </th>
 
-                  <th className="px-4 py-3 text-center text-sm font-semibold">
+                  <th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
                     Actions
                   </th>
                 </tr>
@@ -239,9 +245,9 @@ export default function UserTable({
                 ))}
               </tbody>
             </table>
-          </SortableContext>
-        </DndContext>
-      </div>
+          </div>
+        </SortableContext>
+      </DndContext>
 
       {/* Pagination */}
       <Pagination

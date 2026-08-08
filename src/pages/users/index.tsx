@@ -18,6 +18,7 @@ import UserModal from "./UserModal";
 
 import { userData, type User } from "./userData";
 import SearchFilterBar from "@/components/common/SearchFilterBar";
+
 type StatusFilter = "All" | User["status"];
 type RoleFilter = "All" | User["role"];
 
@@ -31,14 +32,13 @@ const STATUS_OPTIONS: StatusFilter[] = [
 ];
 
 const ROLE_OPTIONS: RoleFilter[] = ["All", "Admin", "Manager", "Member"];
+
 export default function UsersPage() {
   const [users, setUsers] = React.useState<User[]>(userData);
 
   const [search, setSearch] = React.useState("");
-
-  const [status, setStatus] = React.useState<StatusFilter>("All");
-
-  const [role, setRole] = React.useState<RoleFilter>("All");
+  const [status, setStatus] = React.useState("All");
+  const [role, setRole] = React.useState("All");
 
   const [editingUser, setEditingUser] = React.useState<User | null>(null);
 
@@ -46,6 +46,7 @@ export default function UsersPage() {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
 
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+
   const filteredUsers = React.useMemo(() => {
     return users.filter((user) => {
       const matchesSearch =
@@ -60,6 +61,7 @@ export default function UsersPage() {
       return matchesSearch && matchesStatus && matchesRole;
     });
   }, [users, search, status, role]);
+
   const handleCreate = () => {
     setEditingUser(null);
     setModalOpen(true);
@@ -74,6 +76,7 @@ export default function UsersPage() {
     setSelectedUser(user);
     setDeleteOpen(true);
   }, []);
+
   const confirmDelete = React.useCallback(() => {
     if (!selectedUser) return;
 
@@ -112,10 +115,10 @@ export default function UsersPage() {
     setModalOpen(false);
     setEditingUser(null);
   };
+
   return (
     <div className="space-y-6">
       {/* Header */}
-
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <div className="rounded-2xl bg-orange-500 p-3 text-white">
@@ -123,15 +126,17 @@ export default function UsersPage() {
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold">Users</h1>
+            <h1 className="text-2xl font-bold text-foreground">Users</h1>
 
-            <p className="text-sm text-gray-500">Manage your team members.</p>
+            <p className="text-sm text-muted-foreground">
+              Manage your team members.
+            </p>
           </div>
         </div>
 
         <Button
           onClick={handleCreate}
-          className="bg-orange-500 hover:bg-orange-600"
+          className="bg-orange-500 text-white hover:bg-orange-600"
         >
           <Plus className="mr-2 h-4 w-4" />
           Create User
@@ -141,14 +146,14 @@ export default function UsersPage() {
       {/* Filters */}
       <SearchFilterBar>
         <div className="relative w-full sm:max-w-xs sm:flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
           <Input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or email..."
-            className="rounded-xl border-gray-200 pl-9 focus-visible:ring-orange-500"
+            className="rounded-xl border-border bg-background pl-9 focus-visible:ring-orange-500"
           />
         </div>
 
@@ -156,7 +161,7 @@ export default function UsersPage() {
           value={status}
           onValueChange={(v) => setStatus(v as StatusFilter)}
         >
-          <SelectTrigger>
+          <SelectTrigger className="border-border bg-background">
             <SelectValue />
           </SelectTrigger>
 
@@ -170,7 +175,7 @@ export default function UsersPage() {
         </Select>
 
         <Select value={role} onValueChange={(v) => setRole(v as RoleFilter)}>
-          <SelectTrigger>
+          <SelectTrigger className="border-border bg-background">
             <SelectValue />
           </SelectTrigger>
 
@@ -191,15 +196,17 @@ export default function UsersPage() {
             setStatus("All");
           }}
           className={cn(
-            "gap-2",
+            "gap-2 border-border text-muted-foreground",
             (search || role !== "All" || status !== "All") &&
-              "border-orange-300 text-orange-600",
+              "border-orange-300 text-orange-600 hover:bg-orange-50 dark:border-orange-800 dark:text-orange-400 dark:hover:bg-orange-950",
           )}
         >
           <RotateCcw className="h-4 w-4" />
           Reset
         </Button>
       </SearchFilterBar>
+
+      {/* Table */}
       <UserTable
         users={filteredUsers}
         onChange={setUsers}
@@ -207,12 +214,15 @@ export default function UsersPage() {
         onDelete={handleDeleteUser}
       />
 
+      {/* User Modal */}
       <UserModal
         open={modalOpen}
         onOpenChange={setModalOpen}
         user={editingUser}
         onSave={handleSave}
       />
+
+      {/* Delete Confirmation */}
       <DeleteConfirm
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
