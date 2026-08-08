@@ -300,7 +300,7 @@ export default function ProjectForm({
         </div>
       </div>
       {/* Dates */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-5 md:grid-cols-2">
         <div>
           <Label>Start Date</Label>
           <Input
@@ -308,6 +308,7 @@ export default function ProjectForm({
             name="start_date"
             value={form.start_date}
             onChange={handleChange}
+            className="scheme-light dark:scheme-dark"
           />
         </div>
 
@@ -318,6 +319,7 @@ export default function ProjectForm({
             name="end_date"
             value={form.end_date}
             onChange={handleChange}
+            className="scheme-light dark:scheme-dark"
           />
         </div>
       </div>

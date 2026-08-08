@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import {
   DndContext,
   PointerSensor,
@@ -17,16 +18,17 @@ import {
 
 import { CSS } from "@dnd-kit/utilities";
 
-import { GripVertical, Pencil, Trash2, Users } from "lucide-react";
+import { GripVertical, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { EmptyState } from "@/components/common/EmptyState";
-
-import type { User } from "./userData";
 import Pagination from "@/components/common/Pagination";
 import StatusBadge from "@/components/common/StatusBadge";
+
+import type { User } from "./userData";
 
 interface UserTableProps {
   users: User[];
@@ -37,6 +39,10 @@ interface UserTableProps {
 
 const PAGE_SIZE = 8;
 
+/* ==========================================================
+   SORTABLE ROW
+========================================================== */
+
 function SortableRow({
   user,
   onEdit,
@@ -46,37 +52,50 @@ function SortableRow({
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: user.id,
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: user.id,
+  });
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
+    zIndex: isDragging ? 10 : undefined,
   };
 
   return (
     <tr
       ref={setNodeRef}
       style={style}
-      className="border-b border-border transition-colors hover:bg-muted/50"
+      className={`group border-b border-border transition-colors hover:bg-orange-50/60 dark:hover:bg-orange-950/20 ${
+        isDragging
+          ? "bg-orange-50 shadow-lg ring-1 ring-orange-300 dark:bg-orange-950/30"
+          : ""
+      }`}
     >
       {/* Drag */}
-      <td className="w-12 px-4 py-4">
+
+      <td className="w-10 py-3">
         <button
           type="button"
           {...attributes}
           {...listeners}
-          className="cursor-grab text-muted-foreground transition hover:text-orange-500 active:cursor-grabbing"
+          className="flex h-8 w-8 cursor-grab items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-orange-100 hover:text-orange-600 dark:hover:bg-orange-950/30 active:cursor-grabbing"
           aria-label={`Reorder ${user.name}`}
         >
-          <GripVertical className="h-5 w-5" />
+          <GripVertical className="h-4 w-4" />
         </button>
       </td>
 
       {/* User */}
-      <td className="px-4 py-4">
+
+      <td className="px-4 py-3">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarImage src={user.avatar} />
@@ -84,14 +103,14 @@ function SortableRow({
             <AvatarFallback className="bg-orange-100 text-orange-600 dark:bg-orange-950 dark:text-orange-400">
               {user.name
                 .split(" ")
-                .map((n) => n[0])
+                .map((name) => name[0])
                 .join("")
                 .slice(0, 2)}
             </AvatarFallback>
           </Avatar>
 
           <div>
-            <p className="font-medium text-foreground">{user.name}</p>
+            <p className="font-semibold text-foreground">{user.name}</p>
 
             <p className="text-xs text-muted-foreground">{user.email}</p>
           </div>
@@ -99,41 +118,51 @@ function SortableRow({
       </td>
 
       {/* Phone */}
-      <td className="px-4 py-4 text-sm text-foreground">{user.phone}</td>
+
+      <td className="px-4 py-3 text-sm text-foreground">{user.phone}</td>
 
       {/* Role */}
-      <td className="px-4 py-4 text-foreground">{user.role}</td>
+
+      <td className="px-4 py-3 text-sm text-foreground">{user.role}</td>
 
       {/* Department */}
-      <td className="px-4 py-4 text-foreground">{user.department}</td>
+
+      <td className="px-4 py-3 text-sm text-foreground">{user.department}</td>
 
       {/* Status */}
-      <td className="px-4 py-4">
+
+      <td className="px-4 py-3">
         <StatusBadge status={user.status} />
       </td>
 
-      {/* Joining */}
-      <td className="whitespace-nowrap px-4 py-4 text-foreground">
+      {/* Joining Date */}
+
+      <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">
         {user.joining_date}
       </td>
 
       {/* Actions */}
-      <td className="px-4 py-4">
-        <div className="flex items-center justify-center gap-2">
+
+      <td className="px-4 py-3 text-right">
+        <div className="flex items-center justify-end gap-1.5">
           <Button
+            type="button"
+            variant="ghost"
             size="icon"
-            variant="outline"
-            onClick={() => onEdit(user)}
             aria-label={`Edit ${user.name}`}
+            onClick={() => onEdit(user)}
+            className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-orange-100 hover:text-orange-600 dark:hover:bg-orange-950/30"
           >
             <Pencil className="h-4 w-4" />
           </Button>
 
           <Button
+            type="button"
+            variant="ghost"
             size="icon"
-            variant="destructive"
-            onClick={() => onDelete(user)}
             aria-label={`Delete ${user.name}`}
+            onClick={() => onDelete(user)}
+            className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-950/30"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -143,13 +172,23 @@ function SortableRow({
   );
 }
 
+/* ==========================================================
+   MAIN TABLE
+========================================================== */
+
 export default function UserTable({
   users,
   onEdit,
   onDelete,
   onChange,
 }: UserTableProps) {
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 6,
+      },
+    }),
+  );
 
   const [page, setPage] = React.useState(1);
 
@@ -163,78 +202,105 @@ export default function UserTable({
     return users.slice(start, start + PAGE_SIZE);
   }, [users, currentPage]);
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+  /* ========================================================
+     DRAG END
+  ======================================================== */
 
-    if (!over || active.id === over.id) return;
+  const handleDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
 
-    const oldIndex = users.findIndex((u) => u.id === active.id);
+      if (!over || active.id === over.id) {
+        return;
+      }
 
-    const newIndex = users.findIndex((u) => u.id === over.id);
+      const oldIndex = users.findIndex((user) => user.id === active.id);
 
-    onChange(arrayMove(users, oldIndex, newIndex));
-  };
+      const newIndex = users.findIndex((user) => user.id === over.id);
+
+      if (oldIndex === -1 || newIndex === -1) {
+        return;
+      }
+
+      onChange(arrayMove(users, oldIndex, newIndex));
+    },
+    [users, onChange],
+  );
+
+  /* ========================================================
+     EMPTY STATE
+  ======================================================== */
 
   if (!users.length) {
     return (
-      <EmptyState
-        icon={Users}
-        title="No users found"
-        description="Try changing your search or filters, or create a new user."
-      />
+      <div className="w-full rounded-2xl border border-border bg-card shadow-sm">
+        <EmptyState
+          icon={Trash2}
+          title="No users found"
+          description="Create a user to start managing your team members."
+        />
+      </div>
     );
   }
 
+  /* ========================================================
+     TABLE
+  ======================================================== */
+
   return (
-    <div className="space-y-4">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={users.map((u) => u.id)}
-          strategy={verticalListSortingStrategy}
+    <div className="w-full rounded-2xl border border-border bg-card shadow-sm">
+      <div className="w-full overflow-x-auto rounded-2xl">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
-            <table className="w-full min-w-225 text-left">
-              <thead className="border-b border-border bg-muted/50">
-                <tr>
-                  <th className="w-12 px-4 py-3 text-left text-sm font-semibold text-foreground">
-                    {/* Drag */}
-                  </th>
+          <table className="min-w-250 w-full">
+            {/* Table Header */}
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
-                    User
-                  </th>
+            <thead>
+              <tr className="border-b border-border bg-muted/50 hover:bg-muted/70">
+                <th className="w-10 px-2 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  #
+                </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
-                    Phone
-                  </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  User
+                </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
-                    Role
-                  </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Phone
+                </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
-                    Department
-                  </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Role
+                </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
-                    Status
-                  </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Department
+                </th>
 
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
-                    Joining Date
-                  </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Status
+                </th>
 
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Joining Date
+                </th>
 
-              <tbody>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+
+            {/* Table Body */}
+
+            <tbody>
+              <SortableContext
+                items={paginatedUsers.map((user) => user.id)}
+                strategy={verticalListSortingStrategy}
+              >
                 {paginatedUsers.map((user) => (
                   <SortableRow
                     key={user.id}
@@ -243,20 +309,23 @@ export default function UserTable({
                     onDelete={onDelete}
                   />
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </SortableContext>
-      </DndContext>
+              </SortableContext>
+            </tbody>
+          </table>
+        </DndContext>
+      </div>
 
       {/* Pagination */}
-      <Pagination
-        page={currentPage}
-        totalPages={totalPages}
-        totalItems={users.length}
-        pageSize={PAGE_SIZE}
-        onPageChange={setPage}
-      />
+
+      <div className="border-t border-border bg-card px-6 py-4">
+        <Pagination
+          page={currentPage}
+          totalPages={totalPages}
+          totalItems={users.length}
+          pageSize={PAGE_SIZE}
+          onPageChange={setPage}
+        />
+      </div>
     </div>
   );
 }

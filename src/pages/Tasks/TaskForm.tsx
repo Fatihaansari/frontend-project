@@ -179,6 +179,7 @@ export default function TaskForm({
             name="start_date"
             value={form.start_date}
             onChange={handleInputChange}
+            className="scheme-light dark:scheme-dark"
           />
         </div>
 
@@ -190,6 +191,7 @@ export default function TaskForm({
             name="due_date"
             value={form.due_date}
             onChange={handleInputChange}
+            className="scheme-light dark:scheme-dark"
           />
         </div>
       </div>
