@@ -176,11 +176,9 @@ export default function TasksPage() {
     <div className="space-y-6">
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tasks</h1>
+          <h1 className="text-3xl font-bold">Tasks</h1>
 
-          <p className="mt-1 text-gray-500">
-            Manage, assign and track project tasks.
-          </p>
+          <p className="mt-1">Manage, assign and track project tasks.</p>
         </div>
 
         <Button
