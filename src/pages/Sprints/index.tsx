@@ -198,155 +198,153 @@ export default function SprintsPage() {
   ======================================================== */
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        {/* ==================================================
+    <div className="space-y-6">
+      {/* ==================================================
             HEADER
         ================================================== */}
 
-        <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Sprints</h1>
+      <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Sprints</h1>
 
-            <p className="mt-1 text-gray-500">
-              Plan, manage and track project sprints.
-            </p>
-          </div>
-
-          <Button
-            type="button"
-            onClick={handleCreate}
-            className="gap-2 rounded-xl bg-orange-500 hover:bg-orange-600"
-          >
-            <Plus className="h-4 w-4" />
-            Create Sprint
-          </Button>
+          <p className="mt-1 text-gray-500">
+            Plan, manage and track project sprints.
+          </p>
         </div>
 
-        {/* ==================================================
+        <Button
+          type="button"
+          onClick={handleCreate}
+          className="gap-2 rounded-xl bg-orange-500 hover:bg-orange-600"
+        >
+          <Plus className="h-4 w-4" />
+          Create Sprint
+        </Button>
+      </div>
+
+      {/* ==================================================
             FILTERS
         ================================================== */}
 
-        <SearchFilterBar>
-          {/* Search */}
+      <SearchFilterBar>
+        {/* Search */}
 
-          <div className="relative w-full sm:max-w-xs sm:flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <div className="relative w-full sm:max-w-xs sm:flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
 
-            <Input
-              type="text"
-              value={searchTerm}
-              placeholder="Search sprint..."
-              onChange={(event) => setSearchTerm(event.target.value)}
-              className="rounded-xl border-gray-200 pl-9 focus-visible:ring-orange-500"
-            />
-          </div>
+          <Input
+            type="text"
+            value={searchTerm}
+            placeholder="Search sprint..."
+            onChange={(event) => setSearchTerm(event.target.value)}
+            className="rounded-xl border-gray-200 pl-9 focus-visible:ring-orange-500"
+          />
+        </div>
 
-          {/* Project */}
+        {/* Project */}
 
-          <Select
-            value={projectFilter}
-            onValueChange={(value) => setProjectFilter(value)}
-          >
-            <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-48">
-              <SelectValue placeholder="Project" />
-            </SelectTrigger>
+        <Select
+          value={projectFilter}
+          onValueChange={(value) => setProjectFilter(value)}
+        >
+          <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-48">
+            <SelectValue placeholder="Project" />
+          </SelectTrigger>
 
-            <SelectContent>
-              {PROJECT_OPTIONS.map((project) => (
-                <SelectItem key={project} value={project}>
-                  {project === "All" ? "All Projects" : project}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <SelectContent>
+            {PROJECT_OPTIONS.map((project) => (
+              <SelectItem key={project} value={project}>
+                {project === "All" ? "All Projects" : project}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-          {/* Status */}
+        {/* Status */}
 
-          <Select
-            value={statusFilter}
-            onValueChange={(value) => setStatusFilter(value as StatusFilter)}
-          >
-            <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-40">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
+        <Select
+          value={statusFilter}
+          onValueChange={(value) => setStatusFilter(value as StatusFilter)}
+        >
+          <SelectTrigger className="w-full rounded-xl border-gray-200 sm:w-40">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
 
-            <SelectContent>
-              {STATUS_OPTIONS.map((status) => (
-                <SelectItem key={status} value={status}>
-                  {status === "All" ? "All Statuses" : status}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <SelectContent>
+            {STATUS_OPTIONS.map((status) => (
+              <SelectItem key={status} value={status}>
+                {status === "All" ? "All Statuses" : status}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-          {/* Reset */}
+        {/* Reset */}
 
-          <Button
-            type="button"
-            variant="outline"
-            disabled={!hasActiveFilters}
-            onClick={handleResetFilters}
-            className={
-              "w-full gap-2 rounded-xl border-gray-200 text-gray-600 sm:w-auto " +
-              (hasActiveFilters
-                ? "border-orange-300 text-orange-600 hover:bg-orange-50"
-                : "")
-            }
-          >
-            <RotateCcw className="h-4 w-4" />
-            Reset Filters
-          </Button>
-        </SearchFilterBar>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={!hasActiveFilters}
+          onClick={handleResetFilters}
+          className={
+            "w-full gap-2 rounded-xl border-gray-200 text-gray-600 sm:w-auto " +
+            (hasActiveFilters
+              ? "border-orange-300 text-orange-600 hover:bg-orange-50"
+              : "")
+          }
+        >
+          <RotateCcw className="h-4 w-4" />
+          Reset Filters
+        </Button>
+      </SearchFilterBar>
 
-        {/* ==================================================
+      {/* ==================================================
             TABLE
         ================================================== */}
 
-        <SprintTable
-          sprints={filteredSprints}
-          onEdit={handleEdit}
-          onDelete={handleDeleteClick}
-          onChange={handleReorder}
-        />
+      <SprintTable
+        sprints={filteredSprints}
+        onEdit={handleEdit}
+        onDelete={handleDeleteClick}
+        onChange={handleReorder}
+      />
 
-        {/* ==================================================
+      {/* ==================================================
             MODAL
         ================================================== */}
 
-        <SprintModal
-          open={isModalOpen}
-          onOpenChange={(open) => {
-            if (!open) {
-              handleCloseModal();
-            } else {
-              setIsModalOpen(true);
-            }
-          }}
-          sprint={editingSprint}
-          onSave={handleSaveSprint}
-        />
+      <SprintModal
+        open={isModalOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            handleCloseModal();
+          } else {
+            setIsModalOpen(true);
+          }
+        }}
+        sprint={editingSprint}
+        onSave={handleSaveSprint}
+      />
 
-        {/* ==================================================
+      {/* ==================================================
             DELETE CONFIRMATION
         ================================================== */}
 
-        <DeleteConfirm
-          open={!!deleteSprint}
-          onOpenChange={(open) => {
-            if (!open) {
-              setDeleteSprint(null);
-            }
-          }}
-          title="Delete Sprint"
-          description={
-            deleteSprint
-              ? `Are you sure you want to delete "${deleteSprint.sprint_name}"? This action cannot be undone.`
-              : "Are you sure you want to delete this sprint?"
+      <DeleteConfirm
+        open={!!deleteSprint}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteSprint(null);
           }
-          onConfirm={handleConfirmDelete}
-        />
-      </div>
+        }}
+        title="Delete Sprint"
+        description={
+          deleteSprint
+            ? `Are you sure you want to delete "${deleteSprint.sprint_name}"? This action cannot be undone.`
+            : "Are you sure you want to delete this sprint?"
+        }
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 }
