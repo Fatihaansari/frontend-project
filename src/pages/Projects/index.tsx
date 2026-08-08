@@ -147,10 +147,10 @@ export default function ProjectsPage(): React.JSX.Element {
             <FolderKanban className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+            <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
               Projects
             </h1>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm ">
               Manage, track, and organize all your projects in one place.
             </p>
           </div>
