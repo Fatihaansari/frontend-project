@@ -11,6 +11,7 @@ import Settings from "@/pages/Settings";
 import Signup from "@/pages/Auth/signup";
 import Login from "@/pages/Auth/login";
 import { useAuth } from "@/context/AuthContext";
+import NotificationsPage from "@/pages/Notifications";
 
 export default function AppRoutes() {
   const { isAuthenticated } = useAuth();
@@ -45,6 +46,7 @@ export default function AppRoutes() {
           <Route path="/teammanagement" element={<TeamManagement />} />
           <Route path="/users" element={<Users />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
