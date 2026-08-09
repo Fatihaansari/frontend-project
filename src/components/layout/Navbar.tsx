@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -11,10 +9,6 @@ import { useLocation } from "react-router-dom";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
 import NotificationDropdown from "@/pages/Notifications/NotificationDropdown";
-import {
-  notificationData,
-  type Notification,
-} from "@/pages/Notifications/notificationData";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -22,27 +16,6 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const location = useLocation();
-
-  /* =========================================================
-     NOTIFICATIONS
-  ========================================================= */
-
-  const [notifications, setNotifications] =
-    React.useState<Notification[]>(notificationData);
-
-  const handleMarkAllAsRead = React.useCallback(() => {
-    setNotifications((prev) =>
-      prev.map((notification) => ({
-        ...notification,
-        read: true,
-      })),
-    );
-  }, []);
-  const handleDeleteNotification = React.useCallback((id: string) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  }, []);
 
   /* =========================================================
      PAGE TITLES
@@ -115,12 +88,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
         {/* Notifications */}
 
-        <NotificationDropdown
-          notifications={notifications}
-          onMarkAsRead={handleMarkAllAsRead}
-          onMarkAllAsRead={handleMarkAllAsRead}
-          onDelete={handleDeleteNotification}
-        />
+        <NotificationDropdown />
 
         {/* User */}
 

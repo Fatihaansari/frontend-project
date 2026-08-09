@@ -5,30 +5,22 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 import NotificationItem from "./NotificationItem";
-import type { Notification } from "./notificationData";
+import { useNotifications } from "@/context/NotificationsContext";
 
-interface NotificationDropdownProps {
-  notifications: Notification[];
-  onMarkAsRead: (id: string) => void;
-  onMarkAllAsRead: () => void;
-  onDelete: (id: string) => void;
-}
-
-export default function NotificationDropdown({
-  notifications,
-  onMarkAsRead,
-  onMarkAllAsRead,
-  onDelete,
-}: NotificationDropdownProps) {
+export default function NotificationDropdown() {
   const [open, setOpen] = React.useState(false);
 
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
 
-  const unreadCount = notifications.filter(
-    (notification) => !notification.read,
-  ).length;
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+  } = useNotifications();
 
   /* =========================================================
      CLOSE ON OUTSIDE CLICK
@@ -138,8 +130,15 @@ export default function NotificationDropdown({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  onClick={onMarkAllAsRead}
-                  className="h-8 gap-1.5 rounded-lg px-2 text-xs text-orange-600 hover:bg-orange-50 hover:text-orange-700 dark:text-orange-400 dark:hover:bg-orange-950/30"
+                  onClick={markAllAsRead}
+                  className="
+                    h-8 gap-1.5 rounded-lg px-2 text-xs
+                    text-orange-600
+                    hover:bg-orange-50
+                    hover:text-orange-700
+                    dark:text-orange-400
+                    dark:hover:bg-orange-950/30
+                  "
                 >
                   <CheckCheck className="h-3.5 w-3.5" />
                   Mark all read
@@ -151,7 +150,11 @@ export default function NotificationDropdown({
                 variant="ghost"
                 size="icon"
                 onClick={() => setOpen(false)}
-                className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-muted"
+                className="
+                  h-8 w-8 rounded-lg
+                  text-muted-foreground
+                  hover:bg-muted
+                "
                 aria-label="Close notifications"
               >
                 <X className="h-4 w-4" />
@@ -166,7 +169,7 @@ export default function NotificationDropdown({
               max-h-105
               overflow-y-auto
               overscroll-contain
-              scrollbar-hide
+              scrollbar-none
             "
           >
             {notifications.length > 0 ? (
@@ -174,8 +177,8 @@ export default function NotificationDropdown({
                 <NotificationItem
                   key={notification.id}
                   notification={notification}
-                  onMarkAsRead={onMarkAsRead}
-                  onDelete={onDelete}
+                  onMarkAsRead={markAsRead}
+                  onDelete={deleteNotification}
                 />
               ))
             ) : (
@@ -199,7 +202,14 @@ export default function NotificationDropdown({
             <button
               type="button"
               onClick={handleViewAll}
-              className="w-full text-center text-sm font-medium text-orange-600 transition-colors hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
+              className="
+                w-full text-center text-sm font-medium
+                text-orange-600
+                transition-colors
+                hover:text-orange-700
+                dark:text-orange-400
+                dark:hover:text-orange-300
+              "
             >
               View all notifications
             </button>

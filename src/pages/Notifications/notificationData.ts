@@ -6,7 +6,6 @@ export type NotificationType =
   | "system";
 
 export interface Notification {
-  is_read: unknown;
   id: string;
   title: string;
   message: string;
@@ -23,7 +22,6 @@ export const notificationData: Notification[] = [
     type: "task",
     read: false,
     created_at: "2026-08-08T09:30:00Z",
-    is_read: undefined,
   },
   {
     id: "notification-002",
@@ -32,7 +30,6 @@ export const notificationData: Notification[] = [
     type: "sprint",
     read: false,
     created_at: "2026-08-08T08:15:00Z",
-    is_read: undefined,
   },
   {
     id: "notification-003",
@@ -41,7 +38,6 @@ export const notificationData: Notification[] = [
     type: "project",
     read: false,
     created_at: "2026-08-07T14:20:00Z",
-    is_read: undefined,
   },
   {
     id: "notification-004",
@@ -50,7 +46,6 @@ export const notificationData: Notification[] = [
     type: "team",
     read: false,
     created_at: "2026-08-07T11:45:00Z",
-    is_read: undefined,
   },
   {
     id: "notification-005",
@@ -59,7 +54,6 @@ export const notificationData: Notification[] = [
     type: "task",
     read: true,
     created_at: "2026-08-06T16:10:00Z",
-    is_read: undefined,
   },
   {
     id: "notification-006",
@@ -68,7 +62,6 @@ export const notificationData: Notification[] = [
     type: "system",
     read: true,
     created_at: "2026-08-06T10:00:00Z",
-    is_read: undefined,
   },
   {
     id: "notification-007",
@@ -77,7 +70,6 @@ export const notificationData: Notification[] = [
     type: "sprint",
     read: false,
     created_at: "2026-08-05T13:30:00Z",
-    is_read: undefined,
   },
   {
     id: "notification-008",
@@ -86,6 +78,5 @@ export const notificationData: Notification[] = [
     type: "project",
     read: true,
     created_at: "2026-08-04T15:00:00Z",
-    is_read: undefined,
   },
 ];

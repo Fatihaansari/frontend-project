@@ -1,52 +1,27 @@
-import * as React from "react";
-import { Bell, CheckCheck } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import NotificationList from "./NotificationList";
-import { notificationData, type Notification } from "./notificationData";
+
+import { useNotifications } from "@/context/NotificationsContext";
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] =
-    React.useState<Notification[]>(notificationData);
-
-  const unreadCount = notifications.filter(
-    (notification) => !notification.is_read,
-  ).length;
-
-  const handleMarkAsRead = React.useCallback((id: string) => {
-    setNotifications((prev) =>
-      prev.map((notification) =>
-        notification.id === id
-          ? { ...notification, is_read: true }
-          : notification,
-      ),
-    );
-  }, []);
-
-  const handleMarkAllAsRead = React.useCallback(() => {
-    setNotifications((prev) =>
-      prev.map((notification) => ({
-        ...notification,
-        is_read: true,
-      })),
-    );
-  }, []);
-
-  const handleDelete = React.useCallback((id: string) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  }, []);
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+  } = useNotifications();
 
   return (
     <div className="space-y-6">
       {/* Header */}
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <Bell className="h-6 w-6 text-orange-500" />
-
             <h1 className="text-2xl font-bold text-foreground">
               Notifications
             </h1>
@@ -61,7 +36,7 @@ export default function NotificationsPage() {
           <Button
             type="button"
             variant="outline"
-            onClick={handleMarkAllAsRead}
+            onClick={markAllAsRead}
             className="w-full gap-2 rounded-xl border-border sm:w-auto"
           >
             <CheckCheck className="h-4 w-4" />
@@ -71,10 +46,11 @@ export default function NotificationsPage() {
       </div>
 
       {/* Notification List */}
+
       <NotificationList
         notifications={notifications}
-        onMarkAsRead={handleMarkAsRead}
-        onDelete={handleDelete}
+        onMarkAsRead={markAsRead}
+        onDelete={deleteNotification}
       />
     </div>
   );
