@@ -39,7 +39,7 @@ export const notificationData: Notification[] = [
     title: "Project Updated",
     message: "Project Management SaaS project details were updated.",
     type: "project",
-    read: true,
+    read: false,
     created_at: "2026-08-07T14:20:00Z",
     is_read: undefined,
   },

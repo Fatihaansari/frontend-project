@@ -10,12 +10,14 @@ import type { Notification } from "./notificationData";
 interface NotificationDropdownProps {
   notifications: Notification[];
   onMarkAsRead: (id: string) => void;
+  onMarkAllAsRead: () => void;
   onDelete: (id: string) => void;
 }
 
 export default function NotificationDropdown({
   notifications,
   onMarkAsRead,
+  onMarkAllAsRead,
   onDelete,
 }: NotificationDropdownProps) {
   const [open, setOpen] = React.useState(false);
@@ -69,18 +71,6 @@ export default function NotificationDropdown({
       document.removeEventListener("keydown", handleEscape);
     };
   }, [open]);
-
-  /* =========================================================
-     MARK ALL AS READ
-  ========================================================= */
-
-  const handleMarkAllAsRead = () => {
-    notifications.forEach((notification) => {
-      if (!notification.read) {
-        onMarkAsRead(notification.id);
-      }
-    });
-  };
 
   /* =========================================================
      VIEW ALL
@@ -148,7 +138,7 @@ export default function NotificationDropdown({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  onClick={handleMarkAllAsRead}
+                  onClick={onMarkAllAsRead}
                   className="h-8 gap-1.5 rounded-lg px-2 text-xs text-orange-600 hover:bg-orange-50 hover:text-orange-700 dark:text-orange-400 dark:hover:bg-orange-950/30"
                 >
                   <CheckCheck className="h-3.5 w-3.5" />

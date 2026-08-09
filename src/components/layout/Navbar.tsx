@@ -30,19 +30,14 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   const [notifications, setNotifications] =
     React.useState<Notification[]>(notificationData);
 
-  const handleMarkAsRead = React.useCallback((id: string) => {
+  const handleMarkAllAsRead = React.useCallback(() => {
     setNotifications((prev) =>
-      prev.map((notification) =>
-        notification.id === id
-          ? {
-              ...notification,
-              read: true,
-            }
-          : notification,
-      ),
+      prev.map((notification) => ({
+        ...notification,
+        read: true,
+      })),
     );
   }, []);
-
   const handleDeleteNotification = React.useCallback((id: string) => {
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id),
@@ -122,7 +117,8 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
         <NotificationDropdown
           notifications={notifications}
-          onMarkAsRead={handleMarkAsRead}
+          onMarkAsRead={handleMarkAllAsRead}
+          onMarkAllAsRead={handleMarkAllAsRead}
           onDelete={handleDeleteNotification}
         />
 
