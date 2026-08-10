@@ -49,7 +49,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
           variant="ghost"
           size="icon"
           onClick={onMenuClick}
-          className="shrink-0 rounded-xl md:hidden"
+          className="shrink-0 rounded-xl lg:hidden"
           aria-label="Open menu"
         >
           <Menu className="h-5 w-5 text-foreground" />
