@@ -1,13 +1,9 @@
-import FileUpload, { type UploadedFile } from "@/components/common/FileUpload";
-import React from "react";
+import CommentSection from "@/components/comments/CommentSection";
 
-export default function Reports() {
-  const [files, setFiles] = React.useState<UploadedFile[]>([]);
-
+export default function index() {
   return (
-    <div>
-      Reports
-      <FileUpload value={files} onChange={setFiles} multiple />
+    <div className="p-6">
+      <CommentSection targetType="task" targetId="task-1" />
     </div>
   );
 }

@@ -18,7 +18,13 @@ import {
 
 import { CSS } from "@dnd-kit/utilities";
 
-import { GripVertical, Pencil, Trash2, ClipboardCheck } from "lucide-react";
+import {
+  GripVertical,
+  Pencil,
+  Trash2,
+  ClipboardCheck,
+  Eye,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -32,9 +38,9 @@ interface TaskTableProps {
   tasks: Task[];
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onView: (task: Task) => void;
   onChange: (tasks: Task[]) => void;
 }
-
 const PAGE_SIZE = 8;
 
 /* ==========================================================
@@ -58,10 +64,12 @@ function SortableRow({
   task,
   onEdit,
   onDelete,
+  onView,
 }: {
   task: Task;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onView: (task: Task) => void;
 }) {
   const {
     attributes,
@@ -196,6 +204,15 @@ function SortableRow({
             type="button"
             size="icon"
             variant="outline"
+            onClick={() => onView(task)}
+            aria-label={`View ${task.task_name}`}
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            size="icon"
+            variant="outline"
             onClick={() => onEdit(task)}
             aria-label={`Edit ${task.task_name}`}
           >
@@ -225,6 +242,7 @@ export default function TaskTable({
   tasks,
   onEdit,
   onDelete,
+  onView,
   onChange,
 }: TaskTableProps) {
   const sensors = useSensors(useSensor(PointerSensor));
@@ -346,12 +364,12 @@ export default function TaskTable({
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Attachments
                   </th>
+
                   {/* Due Date */}
 
                   <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     Due Date
                   </th>
-
                   {/* Actions */}
 
                   <th className="px-4 py-3 text-center text-sm font-semibold text-foreground">
@@ -371,6 +389,7 @@ export default function TaskTable({
                     task={task}
                     onEdit={onEdit}
                     onDelete={onDelete}
+                    onView={onView}
                   />
                 ))}
               </tbody>
