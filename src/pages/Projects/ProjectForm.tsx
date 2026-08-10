@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import type { Project } from "./projectData";
+import FileUpload from "@/components/common/FileUpload";
 
 interface ProjectFormProps {
   initialData?: Project | null;
@@ -42,6 +43,7 @@ export default function ProjectForm({
         description: "",
         status: "Active",
         priority: "Medium",
+        attachments: [],
         start_date: "",
         end_date: "",
         created_by: "Admin",
@@ -322,6 +324,20 @@ export default function ProjectForm({
             className="scheme-light dark:scheme-dark"
           />
         </div>
+      </div>
+      {/* Attachments */}
+      <div className="space-y-2">
+        <Label>Attachments</Label>
+
+        <FileUpload
+          value={form.attachments}
+          onChange={(attachments) =>
+            setForm((prev) => ({
+              ...prev,
+              attachments,
+            }))
+          }
+        />
       </div>
       {/* Buttons */}
       <div className="flex justify-end gap-3 pt-3">

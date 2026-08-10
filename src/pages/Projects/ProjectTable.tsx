@@ -18,7 +18,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Pencil, Trash2, ImageOff } from "lucide-react";
+import {
+  GripVertical,
+  Pencil,
+  Trash2,
+  ImageOff,
+  Paperclip,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -39,6 +45,7 @@ const PAGE_SIZE = 8;
 ========================================================= */
 
 export interface Project {
+  attachments: [];
   id: string;
   project_name: string;
   project_image: string;
@@ -76,6 +83,8 @@ const TABLE_COLUMNS = [
   { id: "priority", label: "Priority", className: "w-28" },
   { id: "start_date", label: "Start Date", className: "w-32" },
   { id: "end_date", label: "End Date", className: "w-32" },
+  { id: "attachments", label: "Attachments", className: "w-32" },
+
   { id: "actions", label: "Actions", className: "w-28 text-right" },
 ] as const;
 
@@ -216,7 +225,19 @@ function SortableRow({
       <TableCell className="whitespace-nowrap py-3 text-sm text-muted-foreground">
         {formatDate(project.end_date)}
       </TableCell>
-
+      <TableCell className="py-3">
+        {project.attachments?.length ? (
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Paperclip className="h-4 w-4 text-orange-500" />
+            <span>
+              {project.attachments.length}
+              {project.attachments.length === 1 ? " file" : " files"}
+            </span>
+          </div>
+        ) : (
+          <span className="text-sm text-muted-foreground">—</span>
+        )}
+      </TableCell>
       <TableCell className="py-3 text-right">
         <div className="flex items-center justify-end gap-1.5">
           <Button
