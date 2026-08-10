@@ -156,7 +156,28 @@ function SortableRow({
       <td className="px-4 py-4">
         <StatusBadge status={task.status} />
       </td>
-
+      <td className="px-4 py-4">
+        {task.attachments?.length ? (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {task.attachments.map((file) => (
+              <a
+                key={file.id}
+                href={file.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-medium text-orange-600 transition-colors hover:bg-orange-200 dark:bg-orange-950/40 dark:text-orange-400 dark:hover:bg-orange-950/70"
+                title={`Open ${file.name}`}
+              >
+                {file.name.length > 18
+                  ? `${file.name.slice(0, 18)}...`
+                  : file.name}
+              </a>
+            ))}
+          </div>
+        ) : (
+          <span className="text-xs text-muted-foreground">No files</span>
+        )}
+      </td>
       {/* ==================================================
           DUE DATE
       ================================================== */}
@@ -322,7 +343,9 @@ export default function TaskTable({
                   <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
                     Status
                   </th>
-
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Attachments
+                  </th>
                   {/* Due Date */}
 
                   <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">
