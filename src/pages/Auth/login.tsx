@@ -40,7 +40,7 @@ export default function Login() {
 
     try {
       const { user, token } = await authApi.login(values);
-      login(token);
+      login(token, user);
       if (!values.remember) {
         // Session-only: clear the token once the browser tab closes.
         window.addEventListener("beforeunload", () =>

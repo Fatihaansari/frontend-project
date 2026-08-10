@@ -34,7 +34,7 @@ interface UserTableProps {
   users: User[];
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
-  onChange: (users: User[]) => void;
+  onChange?: (users: User[]) => void;
 }
 
 const PAGE_SIZE = 8;
@@ -222,7 +222,7 @@ export default function UserTable({
         return;
       }
 
-      onChange(arrayMove(users, oldIndex, newIndex));
+      onChange?.(arrayMove(users, oldIndex, newIndex));
     },
     [users, onChange],
   );

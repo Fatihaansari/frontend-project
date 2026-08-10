@@ -2,13 +2,13 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Search, ChevronDown, Menu } from "lucide-react";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useLocation } from "react-router-dom";
 
 import ThemeToggle from "@/components/theme/ThemeToggle";
-
 import NotificationDropdown from "@/pages/Notifications/NotificationDropdown";
+
+import { useAuth } from "@/context/AuthContext";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -16,6 +16,8 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   /* =========================================================
      PAGE TITLES
@@ -31,12 +33,29 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
     "/users": "Users",
     "/reports": "Reports",
     "/settings": "Settings",
+    "/profile": "Profile",
+    "/notifications": "Notifications",
   };
 
   const title = pageTitles[location.pathname] ?? "Dashboard";
 
+  /* =========================================================
+     USER DISPLAY
+  ========================================================= */
+
+  const userName = user?.name ?? "User";
+  const userEmail = user?.email ?? "";
+
+  const userInitials =
+    userName
+      .split(" ")
+      .map((part: string) => part.charAt(0))
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "U";
+
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-background px-3 sm:px-4 md:px-6">
+    <header className="flex min-w-0 items-center justify-between gap-3 px-6">
       {/* =====================================================
           LEFT
       ===================================================== */}
@@ -92,20 +111,34 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
         {/* User */}
 
-        <div className="flex items-center gap-2 rounded-full border border-border bg-card px-2 py-1 shadow-sm md:px-3 md:py-2">
-          <Avatar className="h-9 w-9">
-            <AvatarImage src="https://i.pravatar.cc/100?img=12" />
+        <div className="">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => navigate("/profile")}
+            className="flex h-auto items-center gap-2 rounded-full border border-border bg-card px-2 py-1 shadow-sm hover:bg-accent md:px-3 md:py-2"
+            aria-label="Open profile"
+          >
+            <Avatar className="h-9 w-9">
+              <AvatarImage src={user?.avatar} alt={userName} />
 
-            <AvatarFallback>AM</AvatarFallback>
-          </Avatar>
+              <AvatarFallback className="bg-orange-100 text-orange-600 dark:bg-orange-950 dark:text-orange-400">
+                {userInitials}
+              </AvatarFallback>
+            </Avatar>
 
-          <div className="hidden text-left md:block">
-            <p className="text-sm font-semibold text-foreground">Alex Meian</p>
+            <div className="hidden min-w-0 text-left md:block">
+              <p className="max-w-32 truncate text-sm font-semibold text-foreground">
+                {userName}
+              </p>
 
-            <p className="text-xs text-muted-foreground">Product Manager</p>
-          </div>
+              <p className="max-w-32 truncate text-xs text-muted-foreground">
+                {userEmail}
+              </p>
+            </div>
 
-          <ChevronDown className="hidden h-4 w-4 text-muted-foreground md:block" />
+            <ChevronDown className="hidden h-4 w-4 shrink-0 text-muted-foreground md:block" />
+          </Button>
         </div>
       </div>
     </header>
