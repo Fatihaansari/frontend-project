@@ -1,9 +1,10 @@
-import CommentSection from "@/components/comments/CommentSection";
+import { activityData } from "@/components/activity/activityData";
+import ActivitySection from "@/components/activity/ActivitySection";
 
 export default function index() {
   return (
     <div className="p-6">
-      <CommentSection targetType="task" targetId="task-1" />
+      <ActivitySection activities={activityData} />
     </div>
   );
 }
