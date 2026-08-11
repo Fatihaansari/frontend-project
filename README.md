@@ -1,6 +1,6 @@
 # Project Management SaaS
 
-A modern **Project Management SaaS** web application built with **React, Vite, TypeScript, Tailwind CSS, and Shadcn/UI**. The application provides a responsive interface for managing projects, users, sprints, tasks, and other project management workflows.
+A modern **Project Management SaaS** web application built with **React, Vite, TypeScript, Tailwind CSS, and Shadcn/UI**. The application provides a responsive interface for managing projects, users, sprints, tasks, teams, notifications, profiles, attachments, analytics, and other project management workflows.
 
 ## 🚀 Tech Stack
 
@@ -85,6 +85,56 @@ src/
 - Consistent styling across application components
 - Theme support for dashboard, sidebar, forms, and management modules
 
+### Notifications
+
+- Complete Notifications UI
+- Responsive notification interface
+- Notification components integrated with the existing application layout
+- Frontend structure prepared for future backend API integration
+
+### Team Management
+
+- Complete Team Management UI
+- Responsive team management interface
+- Frontend interactions and reusable components
+- Structure prepared for future backend API integration
+
+### User Profile & Authentication
+
+- Complete User Profile UI
+- Profile authentication
+- Dynamic logged-in user information
+- Logged-in user displayed dynamically in the Navbar
+- User information shared across relevant application components
+- Profile structure prepared for backend API integration
+
+### RBAC — Role-Based Access Control
+
+- Implemented frontend Role-Based Access Control
+- Role-based access and feature visibility
+- User permissions handled according to assigned roles
+- RBAC structure prepared for future backend authorization integration
+
+### File Upload & Attachments
+
+- Created a reusable File Upload/Attachment component
+- Integrated attachments into Project CRUD
+- Integrated attachments into Task CRUD
+- File upload functionality
+- Open attached files
+- Edit attached files
+- Delete attached files
+- Reusable attachment component for future modules
+- Frontend structure prepared for backend file/API integration
+
+### Chart Analytics
+
+- Chart Analytics UI
+- Responsive analytics charts
+- Reusable chart components
+- Dummy data for frontend development
+- Analytics structure prepared for future backend API integration
+
 ## 🔄 Frontend Development Approach
 
 The application is being developed with a **frontend-first approach**.
@@ -98,6 +148,9 @@ Dummy data is currently used in frontend modules through `data.ts` where backend
 - Drag & Drop
 - Charts
 - CRUD UI flows
+- File attachments
+- Authentication flows
+- Role-based access
 
 to be developed and tested independently.
 
@@ -107,13 +160,18 @@ Once the backend APIs are available, the dummy data can be replaced with API res
 
 - ✅ React + Vite + TypeScript setup
 - ✅ Tailwind CSS
+- ✅ Shadcn/UI
 - ✅ React Router
 - ✅ Responsive Layout
 - ✅ Sidebar
 - ✅ Authentication UI
 - ✅ Login/Signup Validation
+- ✅ User Profile
+- ✅ Dynamic Navbar User
+- ✅ RBAC
 - ✅ Dashboard
 - ✅ Dashboard Charts
+- ✅ Chart Analytics
 - ✅ Dummy API Data
 - ✅ Users Management
 - ✅ Search & Filtering
@@ -121,17 +179,27 @@ Once the backend APIs are available, the dummy data can be replaced with API res
 - ✅ Modal
 - ✅ Drag & Drop
 - ✅ Sprint Management UI
+- ✅ Team Management UI
+- ✅ Notifications UI
 - ✅ Dark Mode
 - ✅ Light Mode
+- ✅ Reusable File Upload Component
+- ✅ Project Attachments
+- ✅ Task Attachments
+- ✅ File Open/Edit/Delete
 - 🚧 Backend API Integration
 - 🚧 Remaining CRUD Modules
+- 🚧 Comments & Comments Functionality
 
 ## 🔮 Upcoming Work
 
+- Develop Comments UI
+- Implement Comments functionality in relevant Project and Task modules
 - Continue development of remaining frontend CRUD modules
 - Implement reusable CRUD UI patterns
 - Integrate backend APIs when available
 - Connect frontend CRUD operations with APIs
+- Replace dummy data with real API responses
 - Testing and UI optimization
 - Final responsive and cross-browser improvements
 
@@ -139,6 +207,6 @@ Once the backend APIs are available, the dummy data can be replaced with API res
 
 **Project:** Project Management SaaS
 **Internship:** SoftiqTech
-**Team:** _A_
+**Team:** A
 
-> This project is being developed as part of an internship to build a scalable and responsive project management web application.
+> This project is being developed as part of an internship to build a scalable, responsive, and user-friendly project management web application.
