@@ -1,34 +1,28 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import {
+  ArrowLeft,
   CalendarDays,
   CheckCircle2,
   FileText,
   Flag,
   FolderKanban,
+  Pencil,
   User,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
-import type { Task } from "./taskData";
 import CommentSection from "@/components/comments/CommentSection";
 
-interface TaskDetailsProps {
-  task: Task | null;
-  open: boolean;
-  onClose: () => void;
-}
+import type { Task } from "./taskData";
 
 const PRIORITY_STYLES: Record<Task["priority"], string> = {
   Low: "border-green-200 bg-green-50 text-green-700 dark:border-green-900/50 dark:bg-green-950/30 dark:text-green-400",
+
   Medium:
     "border-yellow-200 bg-yellow-50 text-yellow-700 dark:border-yellow-900/50 dark:bg-yellow-950/30 dark:text-yellow-400",
+
   High: "border-red-200 bg-red-50 text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400",
 };
 
@@ -44,29 +38,77 @@ function formatFileSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function TaskDetails({ task, open, onClose }: TaskDetailsProps) {
+export default function TaskDetails() {
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const task = location.state?.task as Task | undefined;
+
   if (!task) {
-    return null;
+    return (
+      <div className="flex min-h-100 flex-col items-center justify-center text-center">
+        {" "}
+        <h2 className="text-xl font-semibold text-foreground">
+          Task not found{" "}
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The task details could not be loaded.
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate("/tasks")}
+          className="mt-4 gap-2 rounded-xl"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Tasks
+        </Button>
+      </div>
+    );
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(value) => {
-        if (!value) {
-          onClose();
-        }
-      }}
-    >
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-        <DialogHeader>
-          <DialogTitle className="pr-8 text-xl">{task.task_name}</DialogTitle>
-        </DialogHeader>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate("/tasks")}
+          className="w-fit gap-2 rounded-xl"
+        >
+          {" "}
+          <ArrowLeft className="h-4 w-4" />
+          Back to Tasks{" "}
+        </Button>
+        <Button
+          type="button"
+          onClick={() => navigate("/tasks")}
+          className="w-fit gap-2 rounded-xl bg-orange-500 hover:bg-orange-600"
+        >
+          <Pencil className="h-4 w-4" />
+          Edit Task
+        </Button>
+      </div>
+      {/* Title */}
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+          {task.task_name}
+        </h1>
 
-        <div className="space-y-6">
+        <p className="mt-1 text-sm text-muted-foreground">
+          Task details and discussion
+        </p>
+      </div>
+      {/* Main Content */}
+
+      <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+        {/* LEFT SIDE */}
+        <div className="min-w-0 space-y-6">
           {/* Description */}
-          <div>
-            <p className="mb-2 text-sm font-medium text-foreground">
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <p className="mb-3 text-sm font-semibold text-foreground">
               Description
             </p>
 
@@ -76,85 +118,106 @@ export default function TaskDetails({ task, open, onClose }: TaskDetailsProps) {
           </div>
 
           {/* Task Information */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="flex items-center gap-3 rounded-xl border border-border p-3">
-              <FolderKanban className="h-5 w-5 text-orange-500" />
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <p className="mb-4 text-sm font-semibold text-foreground">
+              Task Information
+            </p>
 
-              <div>
-                <p className="text-xs text-muted-foreground">Project</p>
-                <p className="text-sm font-medium text-foreground">
-                  {task.project || "—"}
-                </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {/* Project */}
+              <div className="flex items-center gap-3 rounded-xl border border-border p-3">
+                <FolderKanban className="h-5 w-5 shrink-0 text-orange-500" />
+
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground">Project</p>
+                  <p className="truncate text-sm font-medium text-foreground">
+                    {task.project || "—"}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center gap-3 rounded-xl border border-border p-3">
-              <User className="h-5 w-5 text-orange-500" />
+              {/* Assignee */}
+              <div className="flex items-center gap-3 rounded-xl border border-border p-3">
+                <User className="h-5 w-5 shrink-0 text-orange-500" />
 
-              <div>
-                <p className="text-xs text-muted-foreground">Assignee</p>
-                <p className="text-sm font-medium text-foreground">
-                  {task.assignee || "—"}
-                </p>
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground">Assignee</p>
+                  <p className="truncate text-sm font-medium text-foreground">
+                    {task.assignee || "—"}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center gap-3 rounded-xl border border-border p-3">
-              <Flag className="h-5 w-5 text-orange-500" />
+              {/* Priority */}
+              <div className="flex items-center gap-3 rounded-xl border border-border p-3">
+                <Flag className="h-5 w-5 shrink-0 text-orange-500" />
 
-              <div>
-                <p className="text-xs text-muted-foreground">Priority</p>
+                <div>
+                  <p className="text-xs text-muted-foreground">Priority</p>
 
-                <Badge
-                  variant="outline"
-                  className={`mt-1 rounded-full ${PRIORITY_STYLES[task.priority]}`}
-                >
-                  {task.priority}
-                </Badge>
+                  <Badge
+                    variant="outline"
+                    className={`mt-1 rounded-full ${PRIORITY_STYLES[task.priority]}`}
+                  >
+                    {task.priority}
+                  </Badge>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center gap-3 rounded-xl border border-border p-3">
-              <CheckCircle2 className="h-5 w-5 text-orange-500" />
+              {/* Status */}
+              <div className="flex items-center gap-3 rounded-xl border border-border p-3">
+                <CheckCircle2 className="h-5 w-5 shrink-0 text-orange-500" />
 
-              <div>
-                <p className="text-xs text-muted-foreground">Status</p>
-                <p className="text-sm font-medium text-foreground">
-                  {task.status}
-                </p>
+                <div>
+                  <p className="text-xs text-muted-foreground">Status</p>
+
+                  <p className="text-sm font-medium text-foreground">
+                    {task.status}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Dates */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="flex items-center gap-3 rounded-xl border border-border p-3">
-              <CalendarDays className="h-5 w-5 text-orange-500" />
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <p className="mb-4 text-sm font-semibold text-foreground">Dates</p>
 
-              <div>
-                <p className="text-xs text-muted-foreground">Start Date</p>
-                <p className="text-sm font-medium text-foreground">
-                  {task.start_date || "—"}
-                </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {/* Start Date */}
+              <div className="flex items-center gap-3 rounded-xl border border-border p-3">
+                <CalendarDays className="h-5 w-5 shrink-0 text-orange-500" />
+
+                <div>
+                  <p className="text-xs text-muted-foreground">Start Date</p>
+
+                  <p className="text-sm font-medium text-foreground">
+                    {task.start_date || "—"}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center gap-3 rounded-xl border border-border p-3">
-              <CalendarDays className="h-5 w-5 text-orange-500" />
+              {/* Due Date */}
+              <div className="flex items-center gap-3 rounded-xl border border-border p-3">
+                <CalendarDays className="h-5 w-5 shrink-0 text-orange-500" />
 
-              <div>
-                <p className="text-xs text-muted-foreground">Due Date</p>
-                <p className="text-sm font-medium text-foreground">
-                  {task.due_date || "—"}
-                </p>
+                <div>
+                  <p className="text-xs text-muted-foreground">Due Date</p>
+
+                  <p className="text-sm font-medium text-foreground">
+                    {task.due_date || "—"}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Attachments */}
-          <div>
-            <div className="mb-2 flex items-center justify-between">
-              <p className="text-sm font-medium text-foreground">Attachments</p>
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm font-semibold text-foreground">
+                Attachments
+              </p>
 
               <span className="text-xs text-muted-foreground">
                 {task.attachments?.length ?? 0} file
@@ -167,7 +230,7 @@ export default function TaskDetails({ task, open, onClose }: TaskDetailsProps) {
                 {task.attachments.map((file) => (
                   <div
                     key={file.id}
-                    className="flex items-center gap-3 rounded-xl border border-border bg-card p-3"
+                    className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 p-3"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-600 dark:bg-orange-950/30 dark:text-orange-400">
                       <FileText className="h-4 w-4" />
@@ -203,18 +266,27 @@ export default function TaskDetails({ task, open, onClose }: TaskDetailsProps) {
               </div>
             )}
           </div>
-          {/* Comments */}
-          <div className="border-t border-border pt-6">
-            <CommentSection targetId={task.id} targetType="task" />
-          </div>
-          {/* Footer */}
-          <div className="flex justify-end border-t border-border pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Close
-            </Button>
+        </div>
+
+        {/* RIGHT SIDE — COMMENTS */}
+        <div className="min-w-0">
+          <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 lg:sticky lg:top-6">
+            {/* Comments Header */}
+            <div className="mb-4 shrink-0">
+              <p className="text-sm font-semibold text-foreground">Comments</p>
+
+              <p className="mt-1 text-xs text-muted-foreground">
+                Discuss this task with your team.
+              </p>
+            </div>
+
+            {/* Comments */}
+            <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+              <CommentSection targetId={task.id} targetType="task" />
+            </div>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }

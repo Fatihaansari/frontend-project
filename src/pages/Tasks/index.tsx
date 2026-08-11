@@ -22,7 +22,7 @@ import TaskTable from "./TaskTable";
 import TaskModal from "./TaskModal";
 
 import { taskData, type Task } from "./taskData";
-import TaskDetails from "./TaskDetails";
+import { useNavigate } from "react-router-dom";
 
 /* ==========================================================
    TYPES
@@ -58,13 +58,12 @@ export default function TasksPage() {
 
   const [projectFilter, setProjectFilter] =
     React.useState<ProjectFilter>("All");
-
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const [editingTask, setEditingTask] = React.useState<Task | null>(null);
 
   const [deleteTask, setDeleteTask] = React.useState<Task | null>(null);
-  const [viewingTask, setViewingTask] = React.useState<Task | null>(null);
   React.useEffect(() => {
     // TODO: Fetch Tasks API
   }, []);
@@ -120,12 +119,15 @@ export default function TasksPage() {
     setEditingTask(task);
     setIsModalOpen(true);
   }, []);
-  const handleOpenView = React.useCallback((task: Task) => {
-    setViewingTask(task);
-  }, []);
-  const handleCloseView = React.useCallback(() => {
-    setViewingTask(null);
-  }, []);
+  const handleOpenView = React.useCallback(
+    (task: Task) => {
+      navigate(`/tasks/${task.id}`, {
+        state: { task },
+      });
+    },
+    [navigate],
+  );
+
   const handleCloseModal = React.useCallback(() => {
     setEditingTask(null);
     setIsModalOpen(false);
@@ -306,11 +308,7 @@ export default function TasksPage() {
         task={editingTask}
         onSave={handleSaveTask}
       />
-      <TaskDetails
-        task={viewingTask}
-        open={!!viewingTask}
-        onClose={handleCloseView}
-      />
+
       <div className="mt-6 border-t border-border pt-6"></div>
       {/* Delete Confirmation */}
 

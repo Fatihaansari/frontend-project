@@ -13,6 +13,7 @@ import Login from "@/pages/Auth/login";
 import { useAuth } from "@/context/AuthContext";
 import NotificationsPage from "@/pages/Notifications";
 import Profile from "@/pages/Profile";
+import TaskDetails from "@/pages/Tasks/TaskDetails";
 
 export default function AppRoutes() {
   const { isAuthenticated } = useAuth();
@@ -47,6 +48,7 @@ export default function AppRoutes() {
           <Route path="/teammanagement" element={<TeamManagement />} />
           <Route path="/users" element={<Users />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/tasks/:taskId" element={<TaskDetails />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/settings" element={<Settings />} />
