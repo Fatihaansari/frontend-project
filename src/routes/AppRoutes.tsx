@@ -46,9 +46,7 @@ export default function AppRoutes() {
         >
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          /admin/dashboard
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          /admin/permissions
           <Route path="/admin/permissions" element={<PermissionsPage />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/tasks" element={<Tasks />} />
