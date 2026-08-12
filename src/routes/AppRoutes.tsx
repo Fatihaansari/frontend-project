@@ -54,6 +54,7 @@ export default function AppRoutes() {
           <Route path="/teammanagement" element={<TeamManagement />} />
           <Route path="/users" element={<Users />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/users/:userId/profile" element={<Profile />} />
           <Route path="/tasks/:taskId" element={<TaskDetails />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/notifications" element={<NotificationsPage />} />

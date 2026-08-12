@@ -23,7 +23,7 @@ export interface PermissionUser {
   email: string;
   avatar?: string;
   role: string;
-  status: "Active" | "Inactive";
+  status: "Active" | "Inactive" | "Suspended";
   permissions: Permission[];
 }
 
