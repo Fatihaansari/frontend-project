@@ -18,6 +18,7 @@ import ActivityPage from "@/pages/Activity";
 import TeamActivityPage from "@/pages/TeamActivity";
 import AdminDashboard from "@/pages/Admin/Dashboard";
 import PermissionsPage from "@/pages/Admin/Permissions";
+import PerformancePage from "@/pages/Admin/Performance";
 
 export default function AppRoutes() {
   const { isAuthenticated } = useAuth();
@@ -48,6 +49,7 @@ export default function AppRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/permissions" element={<PermissionsPage />} />
+          <Route path="/admin/performance" element={<PerformancePage />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/sprint" element={<Sprint />} />

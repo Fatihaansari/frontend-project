@@ -38,7 +38,7 @@ export interface User {
 
 export const userData: User[] = [
   {
-    id: crypto.randomUUID(),
+    id: "user-001",
     name: "Syed Huzaifa",
     email: "huzaifa@example.com",
     phone: "+92 300 1234567",
@@ -51,7 +51,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-002",
     name: "Zain Qaimi",
     email: "zain@example.com",
     phone: "+92 301 9876543",
@@ -64,7 +64,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-003",
     name: "Ali Raza",
     email: "ali@example.com",
     phone: "+92 302 1112233",
@@ -77,7 +77,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-004",
     name: "Ahmed Khan",
     email: "ahmed@example.com",
     phone: "+92 333 4455667",
@@ -90,7 +90,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-005",
     name: "Fatima Noor",
     email: "fatima@example.com",
     phone: "+92 311 4567890",
@@ -103,7 +103,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-006",
     name: "Ayesha Malik",
     email: "ayesha@example.com",
     phone: "+92 322 1110099",
@@ -116,7 +116,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-007",
     name: "Bilal Hassan",
     email: "bilal@example.com",
     phone: "+92 334 5671234",
@@ -129,7 +129,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-008",
     name: "Hina Tariq",
     email: "hina@example.com",
     phone: "+92 345 2223344",
@@ -142,7 +142,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-009",
     name: "Usman Shah",
     email: "usman@example.com",
     phone: "+92 300 7788990",
@@ -155,7 +155,7 @@ export const userData: User[] = [
     permissions: createPermissions([]),
   },
   {
-    id: crypto.randomUUID(),
+    id: "user-010",
     name: "Sara Khan",
     email: "sara@example.com",
     phone: "+92 321 5566778",
