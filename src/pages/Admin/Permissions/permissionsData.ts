@@ -88,7 +88,7 @@ export const permissionModules: Omit<Permission, "enabled">[] = [
    HELPERS
 ========================================================== */
 
-const createPermissions = (
+export const createPermissions = (
   enabledPermissions: PermissionKey[],
 ): Permission[] => {
   return permissionModules.map((permission) => ({

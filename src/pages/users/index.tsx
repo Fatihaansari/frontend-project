@@ -1,11 +1,7 @@
 import * as React from "react";
 import { Plus, Search, RotateCcw } from "lucide-react";
 import PermissionModal from "@/pages/Admin/Permissions/PermissionModal";
-import {
-  permissionModules,
-  permissionUsers,
-  type PermissionUser,
-} from "@/pages/Admin/Permissions/permissionsData";
+import { type PermissionUser } from "@/pages/Admin/Permissions/permissionsData";
 import { cn } from "@/lib/utils";
 import { useUsers } from "@/context/UsersContext";
 
@@ -94,26 +90,15 @@ export default function UsersPage() {
     setModalOpen(true);
   };
   const handlePermissions = (user: User) => {
-    const existingPermissionUser = permissionUsers.find(
-      (permissionUser) => permissionUser.id === user.id,
-    );
-
-    if (existingPermissionUser) {
-      setPermissionUser(existingPermissionUser);
-    } else {
-      setPermissionUser({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-        role: user.role,
-        status: user.status,
-        permissions: permissionModules.map((permission) => ({
-          ...permission,
-          enabled: false,
-        })),
-      });
-    }
+    setPermissionUser({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      role: user.role,
+      status: user.status,
+      permissions: user.permissions,
+    });
 
     setPermissionOpen(true);
   };
@@ -273,10 +258,11 @@ export default function UsersPage() {
           setPermissionUser(null);
         }}
         onSave={(updatedUser) => {
-          setPermissionUser(updatedUser);
+          updateUser(updatedUser.id, {
+            permissions: updatedUser.permissions,
+          });
 
-          // Abhi frontend/dummy state ke liye
-          console.log("Updated permissions:", updatedUser);
+          setPermissionUser(updatedUser);
         }}
       />
     </div>

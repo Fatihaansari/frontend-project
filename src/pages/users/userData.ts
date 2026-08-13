@@ -1,3 +1,8 @@
+import {
+  createPermissions,
+  type Permission,
+} from "../Admin/Permissions/permissionsData";
+
 export type UserRole =
   | "Admin"
   | "Manager"
@@ -28,6 +33,7 @@ export interface User {
   status: UserStatus;
   joining_date: string;
   created_at: string;
+  permissions: Permission[];
 }
 
 export const userData: User[] = [
@@ -42,6 +48,7 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-01-10",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -54,6 +61,7 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-02-15",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -66,6 +74,7 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-03-01",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -78,6 +87,7 @@ export const userData: User[] = [
     status: "Inactive",
     joining_date: "2025-01-22",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -90,6 +100,7 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-04-12",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -102,6 +113,7 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-02-28",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -114,6 +126,7 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-01-18",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -126,6 +139,7 @@ export const userData: User[] = [
     status: "Inactive",
     joining_date: "2025-03-18",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -138,6 +152,7 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-04-25",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
   {
     id: crypto.randomUUID(),
@@ -150,5 +165,6 @@ export const userData: User[] = [
     status: "Active",
     joining_date: "2025-05-10",
     created_at: new Date().toISOString(),
+    permissions: createPermissions([]),
   },
 ];
