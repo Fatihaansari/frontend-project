@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import MainLayout from "../components/layout/MainLayout";
-
 import Dashboard from "../pages/Dashboard";
 import Projects from "@/pages/Projects/index";
 import Tasks from "@/pages/Tasks/index";
@@ -10,19 +8,15 @@ import TeamManagement from "@/pages/TeamManagement/index";
 import Users from "@/pages/users/index";
 import Reports from "@/pages/Reports/index";
 import Settings from "@/pages/Settings";
-
 import Signup from "@/pages/Auth/signup";
 import Login from "@/pages/Auth/login";
 import AdminLogin from "@/pages/Auth/adminLogin";
-
 import { useAuth } from "@/context/AuthContext";
-
 import NotificationsPage from "@/pages/Notifications";
 import Profile from "@/pages/Profile";
 import TaskDetails from "@/pages/Tasks/TaskDetails";
 import ActivityPage from "@/pages/Activity";
 import TeamActivityPage from "@/pages/TeamActivity";
-
 import AdminDashboard from "@/pages/Admin/Dashboard";
 import PermissionsPage from "@/pages/Admin/Permissions";
 import PerformancePage from "@/pages/Admin/Performance";
